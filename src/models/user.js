@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const Booking = require("../models/booking");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -15,6 +16,13 @@ const userSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  identityNumber: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+  },
+
   age: {
     type: String,
     required: true,
@@ -66,9 +74,13 @@ const userSchema = new mongoose.Schema({
 //   localField: "_id",
 //   foreignField: "owner",
 // });
-
-// userSchema.virtual("myProblems", {
-//   ref: "Problem",
+userSchema.virtual("bookings", {
+  ref: "Booking",
+  localField: "_id",
+  foreignField: "owner",
+});
+// userSchema.virtual("bookings", {
+//   ref: "Booking",
 //   localField: "_id",
 //   foreignField: "owner",
 // });
@@ -114,14 +126,14 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// userSchema.pre("remove", async function (next) {
-//   const user = this;
-//   Problem.deleteMany({
-//     owner: user._id,
-//   });
+userSchema.pre("remove", async function (next) {
+  const user = this;
+  Problem.deleteMany({
+    owner: user._id,
+  });
 
-//   next();
-// });
+  next();
+});
 
 const User = mongoose.model("User", userSchema);
 

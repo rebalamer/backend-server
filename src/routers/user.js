@@ -6,14 +6,14 @@ const LabUser = require("../models/labUser");
 const auth = require("../middleware/auth");
 
 router.post("/users", async (req, res) => {
-  //const labUser = await LabUser.findOne({ username: req.body.username });
-  // console.log(labUser);
+  const labUser = await LabUser.findOne({ username: req.body.username });
+  console.log(labUser);
 
   const user = new User(req.body);
   try {
-    // if (labUser) {
-    //   throw new Error("username is exist");
-    // }
+    if (labUser) {
+      throw new Error("username is exist");
+    }
     await user.save();
 
     // sendWelcomeEmail(user.email, user.name);

@@ -52,6 +52,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+  insurance: {
+    type: Array,
+    required: true,
+    trim: true,
+  },
   tokens: [
     {
       token: {
@@ -68,11 +73,11 @@ const userSchema = new mongoose.Schema({
 //   foreignField: "owner",
 // });
 
-// userSchema.virtual("myProblems", {
-//   ref: "Problem",
-//   localField: "_id",
-//   foreignField: "owner",
-// });
+userSchema.virtual("labBookings", {
+  ref: "Booking",
+  localField: "_id",
+  foreignField: "ownerL",
+});
 
 userSchema.methods.toJSON = function () {
   const user = this;
@@ -115,14 +120,14 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// userSchema.pre("remove", async function (next) {
-//   const user = this;
-//   Problem.deleteMany({
-//     owner: user._id,
-//   });
+userSchema.pre("remove", async function (next) {
+  const user = this;
+  Problem.deleteMany({
+    owner: user._id,
+  });
 
-//   next();
-// });
+  next();
+});
 
 const LabUser = mongoose.model("LabUser", userSchema);
 

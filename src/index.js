@@ -2,7 +2,7 @@ const express = require("express");
 require("./db/mongoose");
 const connectDB = require("./db/mongoose");
 const cors = require("cors");
-const ProductsRouter = require("./routers/products");
+const BookingRouter = require("./routers/booking");
 const LabUserRouter = require("./routers/labUser");
 const UserRouter = require("./routers/user");
 
@@ -14,7 +14,7 @@ connectDB();
 const port = process.env.PORT || 3030;
 
 app.use(express.json());
-app.use(ProductsRouter);
+app.use(BookingRouter);
 app.use(LabUserRouter);
 app.use(UserRouter);
 
