@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const LabUser = require("../models/labUser");
 const User = require("../models/user");
 const labAuth = require("../middleware/labAuth");
+const multer = require("multer");
+const sharp = require("sharp");
 
 router.post("/labUsers", async (req, res) => {
   const user = await User.findOne({ username: req.body.username });
@@ -76,6 +78,8 @@ router.get("/labUsers/me", labAuth, async (req, res) => {
 });
 
 router.patch("/labUsers/me", labAuth, async (req, res) => {
+  const user = await User.findOne({ username: req.body.username });
+
   const updates = Object.keys(req.body);
   const allowedUpdates = [
     "username",
@@ -96,6 +100,9 @@ router.patch("/labUsers/me", labAuth, async (req, res) => {
   }
 
   try {
+    if (user) {
+      throw new Error("username exist");
+    }
     updates.forEach((update) => (req.user[update] = req.body[update]));
     await req.user.save();
     res.send(req.user);

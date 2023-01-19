@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { list } = require("mongodb/lib/gridfs/grid_store");
 
 const Booking = new mongoose.model("Booking", {
   test: {
@@ -25,6 +26,12 @@ const Booking = new mongoose.model("Booking", {
     type: String,
     required: true,
     trim: true,
+  },
+  check: {
+    type: String,
+    required: true,
+    trim: true,
+    default: 0,
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,

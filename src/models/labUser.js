@@ -57,6 +57,7 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
+
   tokens: [
     {
       token: {
@@ -78,6 +79,11 @@ userSchema.virtual("labBookings", {
   localField: "_id",
   foreignField: "ownerL",
 });
+// userSchema.virtual("labBookingsByDate", {
+//   ref: "Booking",
+//   localField: "_id",
+//   foreignField: "date",
+// });
 
 userSchema.methods.toJSON = function () {
   const user = this;
